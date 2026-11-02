@@ -131,7 +131,7 @@ export async function exportCardViaCanvas(
         fontSize = 24;
       }
 
-      ctx.font = `600 ${fontSize}px "Segoe UI", Roboto, "Helvetica Neue", sans-serif`;
+      ctx.font = `700 ${fontSize}px "Montserrat", "Poppins", "Segoe UI", sans-serif`;
 
       // Efek bayangan halus agar teks selalu kontras dan terbaca jelas
       ctx.shadowColor = "rgba(255, 255, 255, 0.9)";

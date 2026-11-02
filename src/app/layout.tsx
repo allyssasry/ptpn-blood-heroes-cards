@@ -1,5 +1,20 @@
 import type { Metadata } from "next";
+import { Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
+
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-poppins",
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  weight: ["500", "600", "700", "800"],
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -39,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className="scroll-smooth">
+    <html lang="id" className={`scroll-smooth ${poppins.variable} ${montserrat.variable}`}>
       <body className="min-h-screen antialiased flex flex-col font-sans">
         {children}
       </body>

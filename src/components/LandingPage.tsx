@@ -68,7 +68,7 @@ export const LandingPage: React.FC = () => {
               <Heart className="w-5 h-5 fill-white" />
             </div>
             <div>
-              <span className="font-serif font-bold text-base sm:text-lg text-ptpn-maroon block leading-tight">
+              <span className="font-montserrat font-bold text-base sm:text-lg text-ptpn-maroon block leading-tight">
                 PTPN Blood Heroes
               </span>
               <span className="text-[11px] sm:text-xs text-gray-500 font-medium block">

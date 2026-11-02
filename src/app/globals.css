@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --font-serif: "Georgia", "Cambria", "Times New Roman", serif;
+    --font-serif: var(--font-montserrat), sans-serif;
   }
 
   body {

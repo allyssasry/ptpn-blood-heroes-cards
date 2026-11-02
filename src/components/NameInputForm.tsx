@@ -49,7 +49,7 @@ export const NameInputForm: React.FC<NameInputFormProps> = ({
           <span>PTPN Blood Heroes • Care in Action</span>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-gray-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-montserrat font-bold text-gray-900 tracking-tight">
           A Special Appreciation for You
         </h1>
 

@@ -103,8 +103,9 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
           >
             <p
               data-card-name
-              className={`font-bold tracking-normal text-ptpn-maroon transition-all duration-300 font-serif ${getFontSizeClasses()}`}
+              className={`font-bold tracking-tight text-ptpn-maroon transition-all duration-300 font-montserrat ${getFontSizeClasses()}`}
               style={{
+                fontFamily: 'var(--font-montserrat), "Poppins", "Montserrat", sans-serif',
                 color: "#6B0F1A",
                 textShadow:
                   "0 0 10px rgba(255, 255, 255, 0.95), 0 0 5px rgba(255, 255, 255, 0.9), 0 1px 2px rgba(255, 255, 255, 0.8)",

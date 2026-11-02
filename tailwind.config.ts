@@ -20,7 +20,10 @@ const config: Config = {
         },
       },
       fontFamily: {
-        serif: ["Georgia", "Cambria", "Times New Roman", "serif"],
+        poppins: ["var(--font-poppins)", "sans-serif"],
+        montserrat: ["var(--font-montserrat)", "sans-serif"],
+        sans: ["var(--font-poppins)", "sans-serif"],
+        serif: ["var(--font-montserrat)", "Georgia", "serif"],
       },
       boxShadow: {
         card: "0 20px 40px -15px rgba(107, 15, 26, 0.2)",

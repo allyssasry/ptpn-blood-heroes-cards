@@ -73,7 +73,7 @@ export const GreetingCardPreview: React.FC<GreetingCardPreviewProps> = ({
           <CheckCircle2 className="w-4 h-4 text-emerald-600" />
           <span>Greeting Card Siap Diunduh</span>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900">
+        <h2 className="text-2xl sm:text-3xl font-montserrat font-bold text-gray-900 tracking-tight">
           Kartu Apresiasi PTPN Blood Heroes
         </h2>
         <p className="text-sm text-gray-600">
