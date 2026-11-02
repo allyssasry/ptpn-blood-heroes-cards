@@ -108,7 +108,7 @@ export const LandingPage: React.FC = () => {
                 </div>
                 <h4 className="font-semibold text-xs sm:text-sm text-gray-800">Apresiasi Resmi</h4>
                 <p className="text-[11px] sm:text-xs text-gray-500 leading-snug">
-                  Kartu digital resmi dari Direksi SDM & Umum PTPN III (Persero).
+                  Kartu digital resmi dari PT Perkebunan Nusantara III (Persero).
                 </p>
               </div>
 
@@ -141,15 +141,9 @@ export const LandingPage: React.FC = () => {
             <p className="font-semibold text-gray-700">
               PTPN Blood Heroes – Care in Action © 2026
             </p>
-            <p>PT Perkebunan Nusantara III (Persero) • Palang Merah Indonesia</p>
+            <p>PT Perkebunan Nusantara III (Persero)</p>
           </div>
 
-          <div className="flex items-center gap-4 text-[11px] text-gray-400">
-            <span className="flex items-center gap-1">
-              <Shield className="w-3.5 h-3.5 text-ptpn-blood" />
-              Bebas Registrasi & Data Pribadi Aman
-            </span>
-          </div>
         </div>
       </footer>
     </div>
