@@ -11,7 +11,6 @@ export const LandingPage: React.FC = () => {
   const [fullName, setFullName] = useState<string>("");
   const [config, setConfig] = useState<GreetingCardSetting | null>(null);
   const [isLoadingConfig, setIsLoadingConfig] = useState<boolean>(true);
-  const [configSource, setConfigSource] = useState<"supabase" | "fallback">("fallback");
 
   // Mengambil konfigurasi acara dari API Route Supabase saat komponen pertama kali dimuat
   useEffect(() => {
@@ -23,7 +22,6 @@ export const LandingPage: React.FC = () => {
 
         if (json.success && json.data) {
           setConfig(json.data);
-          setConfigSource(json.source || "supabase");
         }
       } catch (err) {
         console.warn("Gagal memuat konfigurasi dari API, menggunakan default fallback:", err);
@@ -77,18 +75,6 @@ export const LandingPage: React.FC = () => {
                 Care in Action • PT Perkebunan Nusantara III (Persero)
               </span>
             </div>
-          </div>
-
-          {/* Status Badge Supabase / Live */}
-          <div className="hidden sm:flex items-center gap-2 text-xs text-gray-500 bg-white/90 px-3 py-1.5 rounded-full border border-gray-200 shadow-sm">
-            <span
-              className={`w-2 h-2 rounded-full ${
-                configSource === "supabase" ? "bg-emerald-500" : "bg-amber-400"
-              } animate-ping`}
-            />
-            <span className="font-medium text-gray-700">
-              {configSource === "supabase" ? "Supabase Cloud Connected" : "Siap Digunakan"}
-            </span>
           </div>
         </div>
       </header>
