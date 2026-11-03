@@ -23,5 +23,12 @@ export interface UserCardData {
   gender: Gender;
 }
 
-export type DownloadFormat = "png" | "jpg";
+export interface EventFeedbackData {
+  satisfactionRating: number; // 1 - 10
+  critiqueAndSuggestions: string;
+  fullName: string;
+  gender: Gender;
+  eventName?: string;
+}
 
+export type DownloadFormat = "png" | "jpg";

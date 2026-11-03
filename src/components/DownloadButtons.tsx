@@ -111,7 +111,7 @@ export const DownloadButtons: React.FC<DownloadButtonsProps> = ({
           className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-2.5 px-5 rounded-xl text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300 active:scale-[0.98] transition-all shadow-sm cursor-pointer disabled:opacity-60"
         >
           <Edit3 className="w-4 h-4 text-ptpn-maroon" />
-          <span>Edit Nama</span>
+          <span>Edit Feedback & Nama</span>
         </button>
 
         <button

@@ -1,15 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import NameInputForm from "./NameInputForm";
+import FeedbackForm from "./FeedbackForm";
 import GreetingCardPreview from "./GreetingCardPreview";
-import { GreetingCardSetting, Gender } from "@/types/greeting-card";
-import { Heart, Award, Shield, Sparkles } from "lucide-react";
+import { GreetingCardSetting, Gender, EventFeedbackData } from "@/types/greeting-card";
+import { Heart, Award, Sparkles, CheckCircle2 } from "lucide-react";
 
 export const LandingPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<"input" | "preview">("input");
   const [fullName, setFullName] = useState<string>("");
   const [gender, setGender] = useState<Gender>("laki-laki");
+  const [rating, setRating] = useState<number | null>(null);
+  const [critique, setCritique] = useState<string>("");
   const [config, setConfig] = useState<GreetingCardSetting | null>(null);
   const [isLoadingConfig, setIsLoadingConfig] = useState<boolean>(true);
 
@@ -34,9 +36,23 @@ export const LandingPage: React.FC = () => {
     fetchConfig();
   }, []);
 
-  const handleNameSubmit = (sanitizedName: string, selectedGender: Gender) => {
-    setFullName(sanitizedName);
-    setGender(selectedGender);
+  const handleFeedbackSubmit = async (data: EventFeedbackData) => {
+    setFullName(data.fullName);
+    setGender(data.gender);
+    setRating(data.satisfactionRating);
+    setCritique(data.critiqueAndSuggestions);
+
+    try {
+      // Kirim feedback ke API Route Supabase di background
+      await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+    } catch (err) {
+      console.warn("Gagal mengirim feedback ke server, tetap beralih ke kartu ucapan:", err);
+    }
+
     setCurrentStep("preview");
     // Scroll lembut ke atas untuk melihat preview kartu
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -49,6 +65,8 @@ export const LandingPage: React.FC = () => {
   const handleReset = () => {
     setFullName("");
     setGender("laki-laki");
+    setRating(null);
+    setCritique("");
     setCurrentStep("input");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -79,6 +97,18 @@ export const LandingPage: React.FC = () => {
               </span>
             </div>
           </div>
+
+          {/* Stepper Pill di Header */}
+          <div className="hidden sm:flex items-center gap-2 text-xs font-medium text-gray-500 bg-rose-50/80 px-3 py-1.5 rounded-full border border-rose-100">
+            <span className={currentStep === "input" ? "font-bold text-ptpn-maroon" : "text-gray-400"}>
+              1. Feedback Acara
+            </span>
+            <span>→</span>
+            <span className={currentStep === "preview" ? "font-bold text-ptpn-maroon flex items-center gap-1" : "text-gray-400"}>
+              {currentStep === "preview" && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />}
+              2. Greeting Card
+            </span>
+          </div>
         </div>
       </header>
 
@@ -86,23 +116,25 @@ export const LandingPage: React.FC = () => {
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 flex flex-col justify-center">
         {currentStep === "input" ? (
           <div className="space-y-10 animate-fadeIn">
-            {/* Form Input Nama & Jenis Kelamin */}
-            <NameInputForm
+            {/* Form Feedback Acara & Data Peserta */}
+            <FeedbackForm
+              initialRating={rating}
+              initialCritique={critique}
               initialName={fullName}
               initialGender={gender}
-              onSubmit={handleNameSubmit}
+              onSubmit={handleFeedbackSubmit}
               isLoading={isLoadingConfig}
             />
 
             {/* Nilai-nilai Acara PTPN Blood Heroes */}
-            <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+            <div className="max-w-2xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
               <div className="bg-white/70 backdrop-blur-sm p-4 rounded-xl border border-rose-100/60 shadow-sm text-center space-y-1.5">
                 <div className="w-8 h-8 mx-auto rounded-lg bg-ptpn-roseSoft flex items-center justify-center text-ptpn-maroon">
                   <Heart className="w-4 h-4 fill-ptpn-blood text-ptpn-blood" />
                 </div>
-                <h4 className="font-semibold text-xs sm:text-sm text-gray-800">Aksi Berbagi Hidup</h4>
-                <p className="text-[11px] sm:text-xs text-gray-500 leading-snug">
-                  Setetes darah Anda menyelamatkan kehidupan sesama saudara kita.
+                <h4 className="font-semibold text-xs sm:text-sm text-gray-800">Evaluasi & Masukan</h4>
+                <p className="text-[11px] text-gray-500 leading-snug">
+                  Masukan Anda sangat berharga untuk kesuksesan acara mendatang.
                 </p>
               </div>
 
@@ -111,8 +143,8 @@ export const LandingPage: React.FC = () => {
                   <Award className="w-4 h-4 text-ptpn-blood" />
                 </div>
                 <h4 className="font-semibold text-xs sm:text-sm text-gray-800">Apresiasi Resmi</h4>
-                <p className="text-[11px] sm:text-xs text-gray-500 leading-snug">
-                  Kartu digital resmi dari PT Perkebunan Nusantara III (Persero).
+                <p className="text-[11px] text-gray-500 leading-snug">
+                  Kartu ucapan digital eksklusif dari PT Perkebunan Nusantara III (Persero).
                 </p>
               </div>
 
@@ -120,9 +152,9 @@ export const LandingPage: React.FC = () => {
                 <div className="w-8 h-8 mx-auto rounded-lg bg-ptpn-roseSoft flex items-center justify-center text-ptpn-maroon">
                   <Sparkles className="w-4 h-4 text-ptpn-maroon" />
                 </div>
-                <h4 className="font-semibold text-xs sm:text-sm text-gray-800">Instan & Mudah</h4>
-                <p className="text-[11px] sm:text-xs text-gray-500 leading-snug">
-                  Cukup ketik nama Anda dan unduh kartu langsung beresolusi tinggi.
+                <h4 className="font-semibold text-xs sm:text-sm text-gray-800">Unduh Kualitas HD</h4>
+                <p className="text-[11px] text-gray-500 leading-snug">
+                  Format gambar beresolusi tinggi 1504 × 1007 px siap dicetak atau dibagikan.
                 </p>
               </div>
             </div>
@@ -146,7 +178,7 @@ export const LandingPage: React.FC = () => {
             <p className="font-semibold text-gray-700">
               PTPN Blood Heroes – Care in Action © 2026
             </p>
-            <p>PT Perkebunan Nusantara III (Persero) </p>
+            <p>PT Perkebunan Nusantara III (Persero)</p>
           </div>
         </div>
       </footer>
