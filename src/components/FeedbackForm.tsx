@@ -24,6 +24,7 @@ export const WORK_REGIONS = [
   "PT Perkebunan Nusantara IV (Reg 5)",
   "PT Perkebunan Nusantara IV (Reg 6)",
   "PT Perkebunan Nusantara IV (Reg 7)",
+  "Lainnya",
 ] as const;
 
 interface FeedbackFormProps {
