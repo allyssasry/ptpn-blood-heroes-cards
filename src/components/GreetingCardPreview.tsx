@@ -76,7 +76,7 @@ export const GreetingCardPreview: React.FC<GreetingCardPreviewProps> = ({
           <span>Greeting Card Siap Diunduh</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-montserrat font-bold text-gray-900 tracking-tight">
-          Kartu Apresiasi PTPN Blood Heroes
+          Appreciation Card PTPN Blood Heroes
         </h2>
         <p className="text-sm text-gray-600">
           Dipersembahkan untuk <span className="font-bold text-ptpn-maroon">{gender === "perempuan" ? "sdri." : "sdr."} {fullName}</span> atas
