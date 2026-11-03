@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Gender } from "@/types/greeting-card";
 
 /**
  * Utility untuk menggabungkan class Tailwind CSS dengan rapi dan menghindari konflik
@@ -74,5 +75,19 @@ export function generateFileName(fullName: string, extension: "png" | "jpg"): st
 
   const finalName = safeName.length > 0 ? safeName : "Pahlawan";
   return `PTPN-Blood-Heroes-${finalName}.${extension}`;
+}
+
+/**
+ * Format panggilan nama pada greeting card sesuai jenis kelamin:
+ * - Perempuan: Sdri. [Nama Lengkap]
+ * - Laki-laki: Sdr. [Nama Lengkap]
+ */
+export function formatCardName(fullName: string, gender?: Gender | string): string {
+  const trimmed = fullName.trim();
+  if (!trimmed) return "Pahlawan Donor Darah";
+
+  const isFemale = gender === "perempuan";
+  const prefix = isFemale ? "Sdri." : "Sdr.";
+  return `${prefix} ${trimmed}`;
 }
 

@@ -111,11 +111,11 @@ export async function exportCardViaCanvas(
       // 1. Gambar background template penuh 1504 x 1007
       ctx.drawImage(templateImg, 0, 0, TARGET_WIDTH, TARGET_HEIGHT);
 
-      // 2. Render teks "Dear [Nama]," di atas tulisan "Terima Kasih"
-      // Posisi vertikal: antara pita "Care in Action" (~33%) dan "Terima Kasih" (~47%)
-      // Posisi horizontal: sumbu tengah visual teks acara (~53.5% dari lebar kartu)
+      // 2. Render teks nama di bawah tulisan "PAHLAWAN DONOR DARAH" dan di atas "Setetes darah..."
+      // Posisi vertikal: 58.2% dari tinggi 1007px (~586px)
+      // Posisi horizontal: sumbu tengah visual teks acara (53.5% dari lebar kartu = 805px)
       const centerX = Math.round(TARGET_WIDTH * 0.535);
-      const centerY = Math.round(TARGET_HEIGHT * 0.398);
+      const centerY = Math.round(TARGET_HEIGHT * 0.582);
 
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";

@@ -3,12 +3,13 @@
 import React, { useState, useEffect } from "react";
 import NameInputForm from "./NameInputForm";
 import GreetingCardPreview from "./GreetingCardPreview";
-import { GreetingCardSetting } from "@/types/greeting-card";
+import { GreetingCardSetting, Gender } from "@/types/greeting-card";
 import { Heart, Award, Shield, Sparkles } from "lucide-react";
 
 export const LandingPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<"input" | "preview">("input");
   const [fullName, setFullName] = useState<string>("");
+  const [gender, setGender] = useState<Gender>("laki-laki");
   const [config, setConfig] = useState<GreetingCardSetting | null>(null);
   const [isLoadingConfig, setIsLoadingConfig] = useState<boolean>(true);
 
@@ -33,8 +34,9 @@ export const LandingPage: React.FC = () => {
     fetchConfig();
   }, []);
 
-  const handleNameSubmit = (sanitizedName: string) => {
+  const handleNameSubmit = (sanitizedName: string, selectedGender: Gender) => {
     setFullName(sanitizedName);
+    setGender(selectedGender);
     setCurrentStep("preview");
     // Scroll lembut ke atas untuk melihat preview kartu
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -46,6 +48,7 @@ export const LandingPage: React.FC = () => {
 
   const handleReset = () => {
     setFullName("");
+    setGender("laki-laki");
     setCurrentStep("input");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -83,9 +86,10 @@ export const LandingPage: React.FC = () => {
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 flex flex-col justify-center">
         {currentStep === "input" ? (
           <div className="space-y-10 animate-fadeIn">
-            {/* Form Input Nama */}
+            {/* Form Input Nama & Jenis Kelamin */}
             <NameInputForm
               initialName={fullName}
+              initialGender={gender}
               onSubmit={handleNameSubmit}
               isLoading={isLoadingConfig}
             />
@@ -127,6 +131,7 @@ export const LandingPage: React.FC = () => {
           /* Preview Greeting Card & Download */
           <GreetingCardPreview
             fullName={fullName}
+            gender={gender}
             config={config}
             onEditName={handleEditName}
             onReset={handleReset}
@@ -141,9 +146,15 @@ export const LandingPage: React.FC = () => {
             <p className="font-semibold text-gray-700">
               PTPN Blood Heroes – Care in Action © 2026
             </p>
-            <p>PT Perkebunan Nusantara III (Persero)</p>
+            <p>PT Perkebunan Nusantara III (Persero) • Palang Merah Indonesia</p>
           </div>
 
+          <div className="flex items-center gap-4 text-[11px] text-gray-400">
+            <span className="flex items-center gap-1">
+              <Shield className="w-3.5 h-3.5 text-ptpn-blood" />
+              Bebas Registrasi & Data Pribadi Aman
+            </span>
+          </div>
         </div>
       </footer>
     </div>
@@ -151,4 +162,3 @@ export const LandingPage: React.FC = () => {
 };
 
 export default LandingPage;
-

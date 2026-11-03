@@ -16,8 +16,11 @@ export interface GreetingCardConfigResponse {
   source: "supabase" | "fallback";
 }
 
+export type Gender = "laki-laki" | "perempuan";
+
 export interface UserCardData {
   fullName: string;
+  gender: Gender;
 }
 
 export type DownloadFormat = "png" | "jpg";

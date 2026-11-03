@@ -1,9 +1,12 @@
 "use client";
 
 import React, { forwardRef, useState, useEffect, useRef } from "react";
+import { Gender } from "@/types/greeting-card";
+import { formatCardName } from "@/lib/utils";
 
 interface GreetingCardProps {
   fullName: string;
+  gender?: Gender;
   templateUrl?: string;
   onImageLoad?: () => void;
   className?: string;
@@ -12,10 +15,20 @@ interface GreetingCardProps {
 /**
  * Komponen inti Greeting Card PTPN Blood Heroes.
  * Mempertahankan 100% elemen grafis template resmi asli dan menambahkan teks
- * dinamis "Dear [Nama Pengguna]," di posisi tengah kartu secara proporsional.
+ * dinamis "Sdr. [Nama]" atau "Sdri. [Nama]" di posisi bawah tulisan "PAHLAWAN DONOR DARAH"
+ * dan di atas kalimat "Setetes darah, sejuta harapan.".
  */
 export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
-  ({ fullName, templateUrl = "/images/fallback-template.png", onImageLoad, className = "" }, ref) => {
+  (
+    {
+      fullName,
+      gender = "laki-laki",
+      templateUrl = "/images/fallback-template.png",
+      onImageLoad,
+      className = "",
+    },
+    ref
+  ) => {
     const [imgSrc, setImgSrc] = useState<string>(templateUrl || "/images/fallback-template.png");
     const imageElementRef = useRef<HTMLImageElement>(null);
 
@@ -34,8 +47,8 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
       }
     }, [imgSrc, onImageLoad]);
 
-    // Format teks tampilan
-    const displayName = fullName.trim() ? `Dear ${fullName.trim()},` : "Dear Pahlawan Donor Darah,";
+    // Format teks tampilan sesuai jenis kelamin (Sdr. / Sdri.)
+    const displayName = formatCardName(fullName, gender);
     const nameLength = displayName.length;
 
     // Kalkulasi ukuran teks adaptif agar tidak bertabrakan dengan elemen lain
@@ -90,15 +103,15 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
           />
 
           {/* Area Teks Dinamis Personalisasi Nama */}
-          {/* Posisi: Di atas tulisan "Terima Kasih" (~47%) dan di bawah pita "Care in Action" (~33%) */}
-          {/* Sumbu Horizontal diselaraskan ke 53.5% agar presisi di tengah "Care in Action" dan "Terima Kasih" */}
+          {/* Posisi: Tepat DI BAWAH tulisan "PAHLAWAN DONOR DARAH" (~52.5%) dan DI ATAS "Setetes darah, sejuta harapan." (~64.5%) */}
+          {/* Sumbu Horizontal: 53.5% agar presisi di tengah-tengah teks judul */}
           <div
             className="absolute -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none"
             style={{
               left: "53.5%",
-              top: "39.8%",
-              width: "56%", // Batas lebar aman agar tidak menabrak lereng bukit di kiri & ornamen hati di kanan
-              maxHeight: "10%",
+              top: "58.2%",
+              width: "58%", // Batas lebar aman
+              maxHeight: "8%",
             }}
           >
             <p

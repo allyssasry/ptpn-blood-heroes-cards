@@ -5,11 +5,12 @@ import GreetingCard from "./GreetingCard";
 import DownloadButtons from "./DownloadButtons";
 import { exportCardAsImage } from "@/lib/image-generator";
 import { generateFileName } from "@/lib/utils";
-import { DownloadFormat, GreetingCardSetting } from "@/types/greeting-card";
+import { DownloadFormat, GreetingCardSetting, Gender } from "@/types/greeting-card";
 import { AlertCircle, CheckCircle2, ShieldCheck, Calendar, Sparkles } from "lucide-react";
 
 interface GreetingCardPreviewProps {
   fullName: string;
+  gender?: Gender;
   config: GreetingCardSetting | null;
   onEditName: () => void;
   onReset: () => void;
@@ -17,6 +18,7 @@ interface GreetingCardPreviewProps {
 
 export const GreetingCardPreview: React.FC<GreetingCardPreviewProps> = ({
   fullName,
+  gender = "laki-laki",
   config,
   onEditName,
   onReset,
@@ -77,7 +79,7 @@ export const GreetingCardPreview: React.FC<GreetingCardPreviewProps> = ({
           Kartu Apresiasi PTPN Blood Heroes
         </h2>
         <p className="text-sm text-gray-600">
-          Dipersembahkan untuk <span className="font-bold text-ptpn-maroon">{fullName}</span> atas
+          Dipersembahkan untuk <span className="font-bold text-ptpn-maroon">{gender === "perempuan" ? "Sdri." : "Sdr."} {fullName}</span> atas
           kontribusi mulia bagi sesama.
         </p>
       </div>
@@ -108,6 +110,7 @@ export const GreetingCardPreview: React.FC<GreetingCardPreviewProps> = ({
           <GreetingCard
             ref={cardRef}
             fullName={fullName}
+            gender={gender}
             templateUrl={templateUrl}
             onImageLoad={() => setIsImageReady(true)}
             className="w-full"

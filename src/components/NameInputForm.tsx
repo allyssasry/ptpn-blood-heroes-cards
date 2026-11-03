@@ -1,21 +1,25 @@
 "use client";
 
 import React, { useState } from "react";
-import { User, Sparkles, Heart, AlertCircle } from "lucide-react";
+import { User, Users, Sparkles, Heart, AlertCircle, ChevronDown } from "lucide-react";
 import { validateAndSanitizeName } from "@/lib/utils";
+import { Gender } from "@/types/greeting-card";
 
 interface NameInputFormProps {
   initialName?: string;
-  onSubmit: (sanitizedName: string) => void;
+  initialGender?: Gender;
+  onSubmit: (sanitizedName: string, gender: Gender) => void;
   isLoading?: boolean;
 }
 
 export const NameInputForm: React.FC<NameInputFormProps> = ({
   initialName = "",
+  initialGender = "laki-laki",
   onSubmit,
   isLoading = false,
 }) => {
   const [name, setName] = useState(initialName);
+  const [gender, setGender] = useState<Gender>(initialGender);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -28,8 +32,13 @@ export const NameInputForm: React.FC<NameInputFormProps> = ({
       return;
     }
 
+    if (!gender) {
+      setErrorMessage("Silakan pilih jenis kelamin.");
+      return;
+    }
+
     setErrorMessage(null);
-    onSubmit(sanitized);
+    onSubmit(sanitized, gender);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,6 +74,7 @@ export const NameInputForm: React.FC<NameInputFormProps> = ({
 
       {/* Form Input */}
       <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+        {/* Input Nama Lengkap */}
         <div>
           <div className="flex items-center justify-between mb-2">
             <label
@@ -93,21 +103,55 @@ export const NameInputForm: React.FC<NameInputFormProps> = ({
               autoComplete="name"
               maxLength={80}
               className={`block w-full pl-11 pr-4 py-3 sm:py-3.5 text-gray-900 text-sm sm:text-base rounded-xl border bg-gray-50/50 transition-all focus:bg-white focus:outline-none focus:ring-2 ${
-                errorMessage
+                errorMessage && !name.trim()
                   ? "border-red-400 focus:ring-red-400/30"
                   : "border-gray-200 focus:border-ptpn-maroon focus:ring-ptpn-blood/20"
               }`}
             />
           </div>
-
-          {/* Pesan Validasi Error */}
-          {errorMessage && (
-            <div className="mt-2.5 flex items-center gap-1.5 text-xs sm:text-sm text-red-600 animate-fadeIn">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
-              <span>{errorMessage}</span>
-            </div>
-          )}
         </div>
+
+        {/* Input Jenis Kelamin (Dropdown) */}
+        <div>
+          <label
+            htmlFor="gender"
+            className="block text-sm font-semibold text-gray-800 mb-2"
+          >
+            Jenis Kelamin
+          </label>
+
+          <div className="relative rounded-xl shadow-sm">
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+              <Users className="h-5 w-5 text-ptpn-maroon/60" />
+            </div>
+
+            <select
+              id="gender"
+              name="gender"
+              value={gender}
+              onChange={(e) => {
+                setGender(e.target.value as Gender);
+                if (errorMessage) setErrorMessage(null);
+              }}
+              className="block w-full pl-11 pr-10 py-3 sm:py-3.5 text-gray-900 text-sm sm:text-base rounded-xl border border-gray-200 bg-gray-50/50 transition-all focus:bg-white focus:border-ptpn-maroon focus:outline-none focus:ring-2 focus:ring-ptpn-blood/20 appearance-none cursor-pointer"
+            >
+              <option value="laki-laki">Laki-laki (Sdr.)</option>
+              <option value="perempuan">Perempuan (Sdri.)</option>
+            </select>
+
+            <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-gray-400">
+              <ChevronDown className="h-5 w-5 text-gray-400" />
+            </div>
+          </div>
+        </div>
+
+        {/* Pesan Validasi Error */}
+        {errorMessage && (
+          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-red-600 animate-fadeIn">
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <span>{errorMessage}</span>
+          </div>
+        )}
 
         {/* Tombol Submit */}
         <button
@@ -142,4 +186,3 @@ export const NameInputForm: React.FC<NameInputFormProps> = ({
 };
 
 export default NameInputForm;
-
