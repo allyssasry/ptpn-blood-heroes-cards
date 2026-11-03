@@ -7,12 +7,23 @@ import { validateAndSanitizeName } from "@/lib/utils";
 
 export const WORK_REGIONS = [
   "PT Perkebunan Nusantara I (HO)",
-  "PT Perkebunan Nusantara I (Re 1)",
-  "PT Perkebunan Nusantara I (Re 2)",
-  "PT Perkebunan Nusantara I (Re 3)",
-  "PT Perkebunan Nusantara I (Re 4)",
-  "PT Perkebunan Nusantara III (HO)",
+  "PT Perkebunan Nusantara I (Reg 1)",
+  "PT Perkebunan Nusantara I (Reg 2)",
+  "PT Perkebunan Nusantara I (Reg 3)",
+  "PT Perkebunan Nusantara I (Reg 4)",
+  "PT Perkebunan Nusantara I (Reg 5)",
+  "PT Perkebunan Nusantara I (Reg 6)",
+  "PT Perkebunan Nusantara I (Reg 7)",
+  "PT Perkebunan Nusantara III",
+  "PT. Sinergi Gula Nusantara",
   "PT Perkebunan Nusantara IV (HO)",
+  "PT Perkebunan Nusantara IV (Reg 1)",
+  "PT Perkebunan Nusantara IV (Reg 2)",
+  "PT Perkebunan Nusantara IV (Reg 3)",
+  "PT Perkebunan Nusantara IV (Reg 4)",
+  "PT Perkebunan Nusantara IV (Reg 5)",
+  "PT Perkebunan Nusantara IV (Reg 6)",
+  "PT Perkebunan Nusantara IV (Reg 7)",
 ] as const;
 
 interface FeedbackFormProps {
@@ -251,11 +262,10 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
         {/* CARD 3: PERTANYAAN 1 - SKALA KEPUASAN (1 - 10) */}
         <div
           id="question-rating"
-          className={`bg-white rounded-2xl shadow-sm border p-6 transition-all ${
-            !rating && errorMessage?.includes("skala kepuasan")
-              ? "border-red-400 ring-2 ring-red-100"
-              : "border-gray-200/90 hover:border-gray-300"
-          }`}
+          className={`bg-white rounded-2xl shadow-sm border p-6 transition-all ${!rating && errorMessage?.includes("skala kepuasan")
+            ? "border-red-400 ring-2 ring-red-100"
+            : "border-gray-200/90 hover:border-gray-300"
+            }`}
         >
           <div className="space-y-4">
             <label className="block text-sm sm:text-base font-medium text-gray-900 leading-snug">
@@ -284,18 +294,16 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
                           }}
                         >
                           <span
-                            className={`text-xs sm:text-sm font-semibold transition-colors ${
-                              isSelected ? "text-ptpn-maroon scale-110" : "text-gray-600 group-hover:text-gray-900"
-                            }`}
+                            className={`text-xs sm:text-sm font-semibold transition-colors ${isSelected ? "text-ptpn-maroon scale-110" : "text-gray-600 group-hover:text-gray-900"
+                              }`}
                           >
                             {num}
                           </span>
                           <div
-                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                              isSelected
-                                ? "border-ptpn-maroon bg-ptpn-maroon/10"
-                                : "border-gray-300 group-hover:border-gray-400 bg-white"
-                            }`}
+                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${isSelected
+                              ? "border-ptpn-maroon bg-ptpn-maroon/10"
+                              : "border-gray-300 group-hover:border-gray-400 bg-white"
+                              }`}
                           >
                             {isSelected && (
                               <div className="w-2.5 h-2.5 rounded-full bg-ptpn-maroon" />
@@ -337,11 +345,10 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
         {/* CARD 4: PERTANYAAN 2 - KRITIK & SARAN */}
         <div
           id="question-critique"
-          className={`bg-white rounded-2xl shadow-sm border p-6 transition-all relative ${
-            !critique.trim() && errorMessage?.includes("kritik dan saran")
-              ? "border-red-400 ring-2 ring-red-100"
-              : "border-gray-200/90 hover:border-gray-300"
-          }`}
+          className={`bg-white rounded-2xl shadow-sm border p-6 transition-all relative ${!critique.trim() && errorMessage?.includes("kritik dan saran")
+            ? "border-red-400 ring-2 ring-red-100"
+            : "border-gray-200/90 hover:border-gray-300"
+            }`}
         >
           {/* Ikon Drag Handle Google Form */}
           <div className="flex justify-center -mt-3 mb-2 text-gray-300">
