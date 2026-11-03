@@ -94,18 +94,18 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
 
       {/* CARD 1: HEADER FORM (Google Form Style dengan Top Accent) */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200/90 overflow-hidden relative">
-        {/* Accent Bar Atas Khas Form */}
-        <div className="h-3 w-full bg-gradient-to-r from-[#1b4332] via-[#2d6a4f] to-[#1b4332]" />
+        {/* Accent Bar Atas Khas Form Berwarna Maroon PTPN */}
+        <div className="h-3 w-full bg-gradient-to-r from-ptpn-maroon via-ptpn-blood to-ptpn-maroon" />
 
         <div className="p-6 sm:p-8 space-y-4">
-          {/* Badge Bagian (persis screenshot) */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#1e4d4d] text-white text-xs font-semibold tracking-wide shadow-sm">
+          {/* Badge Bagian Berwarna Maroon PTPN */}
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-ptpn-maroon text-white text-xs font-semibold tracking-wide shadow-sm">
             <span>Bagian 3 dari 3</span>
           </div>
 
           <div>
             <h1 className="text-xl sm:text-2xl font-montserrat font-bold text-gray-900 tracking-tight">
-              B. FEEDBACK NUSANTARUN
+              FEEDBACK PTPN BLOOD HEROES
             </h1>
             <p className="text-xs sm:text-sm text-gray-500 mt-1">
               Silakan berikan penilaian dan masukan Anda terkait acara hari ini. Setelah mengirimkan feedback, Greeting Card apresiasi resmi Anda otomatis siap untuk diunduh.
@@ -119,15 +119,14 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
         {/* CARD 2: PERTANYAAN 1 - SKALA KEPUASAN (1 - 10) */}
         <div
           id="question-rating"
-          className={`bg-white rounded-2xl shadow-sm border p-6 transition-all ${
-            !rating && errorMessage?.includes("skala kepuasan")
-              ? "border-red-400 ring-2 ring-red-100"
-              : "border-gray-200/90 hover:border-gray-300"
-          }`}
+          className={`bg-white rounded-2xl shadow-sm border p-6 transition-all ${!rating && errorMessage?.includes("skala kepuasan")
+            ? "border-red-400 ring-2 ring-red-100"
+            : "border-gray-200/90 hover:border-gray-300"
+            }`}
         >
           <div className="space-y-4">
             <label className="block text-sm sm:text-base font-medium text-gray-900 leading-snug">
-              Seberapa puas Anda terkait dengan acara lari hari ini?
+              Seberapa puas Anda terkait dengan acara donor darah hari ini?
               <span className="text-red-500 font-bold ml-1">*</span>
             </label>
 
@@ -152,18 +151,16 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
                           }}
                         >
                           <span
-                            className={`text-xs sm:text-sm font-semibold transition-colors ${
-                              isSelected ? "text-ptpn-maroon scale-110" : "text-gray-600 group-hover:text-gray-900"
-                            }`}
+                            className={`text-xs sm:text-sm font-semibold transition-colors ${isSelected ? "text-ptpn-maroon scale-110" : "text-gray-600 group-hover:text-gray-900"
+                              }`}
                           >
                             {num}
                           </span>
                           <div
-                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                              isSelected
-                                ? "border-ptpn-maroon bg-ptpn-maroon/10"
-                                : "border-gray-300 group-hover:border-gray-400 bg-white"
-                            }`}
+                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${isSelected
+                              ? "border-ptpn-maroon bg-ptpn-maroon/10"
+                              : "border-gray-300 group-hover:border-gray-400 bg-white"
+                              }`}
                           >
                             {isSelected && (
                               <div className="w-2.5 h-2.5 rounded-full bg-ptpn-maroon" />
@@ -205,11 +202,10 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
         {/* CARD 3: PERTANYAAN 2 - KRITIK & SARAN */}
         <div
           id="question-critique"
-          className={`bg-white rounded-2xl shadow-sm border p-6 transition-all relative ${
-            !critique.trim() && errorMessage?.includes("kritik dan saran")
-              ? "border-red-400 ring-2 ring-red-100"
-              : "border-gray-200/90 hover:border-gray-300"
-          }`}
+          className={`bg-white rounded-2xl shadow-sm border p-6 transition-all relative ${!critique.trim() && errorMessage?.includes("kritik dan saran")
+            ? "border-red-400 ring-2 ring-red-100"
+            : "border-gray-200/90 hover:border-gray-300"
+            }`}
         >
           {/* Ikon Drag Handle Google Form */}
           <div className="flex justify-center -mt-3 mb-2 text-gray-300">
@@ -221,7 +217,7 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
               htmlFor="critiqueInput"
               className="block text-sm sm:text-base font-medium text-gray-900 leading-snug"
             >
-              Berikan kritik dan saran untuk acara lari hari ini
+              Berikan kritik dan saran untuk acara donor darah hari ini
               <span className="text-red-500 font-bold ml-1">*</span>
             </label>
 
@@ -350,3 +346,4 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
 };
 
 export default FeedbackForm;
+

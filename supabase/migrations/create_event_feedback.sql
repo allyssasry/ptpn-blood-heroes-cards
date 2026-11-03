@@ -46,3 +46,4 @@ ON public.event_feedback
 FOR SELECT
 TO authenticated
 USING (true);
+
