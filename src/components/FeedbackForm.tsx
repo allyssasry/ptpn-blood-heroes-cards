@@ -98,11 +98,6 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
         <div className="h-3 w-full bg-gradient-to-r from-ptpn-maroon via-ptpn-blood to-ptpn-maroon" />
 
         <div className="p-6 sm:p-8 space-y-4">
-          {/* Badge Bagian Berwarna Maroon PTPN */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-ptpn-maroon text-white text-xs font-semibold tracking-wide shadow-sm">
-            <span>Bagian 3 dari 3</span>
-          </div>
-
           <div>
             <h1 className="text-xl sm:text-2xl font-montserrat font-bold text-gray-900 tracking-tight">
               FEEDBACK PTPN BLOOD HEROES
@@ -310,13 +305,10 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
                 className="block w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-900 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-ptpn-maroon/20 focus:border-ptpn-maroon transition-all bg-gray-50/50 focus:bg-white cursor-pointer"
                 required
               >
-                <option value="laki-laki">Laki-laki (Gelar Kartu: Sdr.)</option>
-                <option value="perempuan">Perempuan (Gelar Kartu: Sdri.)</option>
+                <option value="laki-laki">Laki-laki</option>
+                <option value="perempuan">Perempuan</option>
               </select>
             </div>
-            <p className="text-[11px] text-gray-500">
-              * Di kartu ucapan otomatis disesuaikan menjadi <strong>{gender === "perempuan" ? "Sdri." : "Sdr."} [Nama Lengkap]</strong>.
-            </p>
           </div>
         </div>
 
