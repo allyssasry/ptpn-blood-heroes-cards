@@ -28,6 +28,7 @@ export interface EventFeedbackData {
   critiqueAndSuggestions: string;
   fullName: string;
   gender: Gender;
+  workRegion: string;
   eventName?: string;
 }
 

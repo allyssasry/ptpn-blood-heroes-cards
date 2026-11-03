@@ -10,6 +10,7 @@ export const LandingPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<"input" | "preview">("input");
   const [fullName, setFullName] = useState<string>("");
   const [gender, setGender] = useState<Gender>("laki-laki");
+  const [workRegion, setWorkRegion] = useState<string>("");
   const [rating, setRating] = useState<number | null>(null);
   const [critique, setCritique] = useState<string>("");
   const [config, setConfig] = useState<GreetingCardSetting | null>(null);
@@ -39,6 +40,7 @@ export const LandingPage: React.FC = () => {
   const handleFeedbackSubmit = async (data: EventFeedbackData) => {
     setFullName(data.fullName);
     setGender(data.gender);
+    setWorkRegion(data.workRegion);
     setRating(data.satisfactionRating);
     setCritique(data.critiqueAndSuggestions);
 
@@ -65,6 +67,7 @@ export const LandingPage: React.FC = () => {
   const handleReset = () => {
     setFullName("");
     setGender("laki-laki");
+    setWorkRegion("");
     setRating(null);
     setCritique("");
     setCurrentStep("input");
@@ -122,6 +125,7 @@ export const LandingPage: React.FC = () => {
               initialCritique={critique}
               initialName={fullName}
               initialGender={gender}
+              initialWorkRegion={workRegion}
               onSubmit={handleFeedbackSubmit}
               isLoading={isLoadingConfig}
             />

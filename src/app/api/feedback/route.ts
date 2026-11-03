@@ -4,7 +4,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { satisfactionRating, critiqueAndSuggestions, fullName, gender, eventName } = body;
+    const { satisfactionRating, critiqueAndSuggestions, fullName, gender, workRegion, eventName } = body;
 
     // Validasi data input
     const ratingNum = Number(satisfactionRating);
@@ -36,12 +36,20 @@ export async function POST(request: Request) {
       );
     }
 
-    const sanitizedData = {
+    if (!workRegion || typeof workRegion !== "string" || !workRegion.trim()) {
+      return NextResponse.json(
+        { success: false, error: "Wilayah kerja wajib dipilih." },
+        { status: 400 }
+      );
+    }
+
+    const sanitizedData: Record<string, unknown> = {
       satisfaction_rating: ratingNum,
       critique_and_suggestions: critiqueAndSuggestions.trim(),
       full_name: fullName.trim(),
       gender: gender,
-      event_name: eventName || "Nusantarun / PTPN Blood Heroes",
+      work_region: workRegion.trim(),
+      event_name: eventName || "PTPN Blood Heroes",
     };
 
     const supabase = createServerSupabaseClient();
@@ -55,8 +63,24 @@ export async function POST(request: Request) {
       });
     }
 
-    // Coba simpan ke tabel event_feedback
-    const { error } = await supabase.from("event_feedback").insert([sanitizedData]);
+    // Coba simpan ke tabel event_feedback (lengkap dengan work_region)
+    let { error } = await supabase.from("event_feedback").insert([sanitizedData]);
+
+    // Jika kolom work_region belum dibuat di Supabase, fallback simpan tanpa kolom tersebut
+    if (error && error.message.toLowerCase().includes("work_region")) {
+      console.warn(
+        "[API Feedback] Kolom work_region belum ada di Supabase, mencoba simpan data inti..."
+      );
+      const fallbackData = {
+        satisfaction_rating: ratingNum,
+        critique_and_suggestions: critiqueAndSuggestions.trim(),
+        full_name: fullName.trim(),
+        gender: gender,
+        event_name: eventName || "PTPN Blood Heroes",
+      };
+      const retryResult = await supabase.from("event_feedback").insert([fallbackData]);
+      error = retryResult.error;
+    }
 
     if (error) {
       console.warn(
@@ -87,4 +111,3 @@ export async function POST(request: Request) {
     });
   }
 }
-

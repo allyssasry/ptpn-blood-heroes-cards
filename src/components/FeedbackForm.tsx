@@ -1,15 +1,26 @@
 "use client";
 
 import React, { useState } from "react";
-import { User, Heart, AlertCircle, Sparkles, Send, MessageSquareHeart, GripHorizontal } from "lucide-react";
+import { User, Heart, AlertCircle, Sparkles, Send, MessageSquareHeart, GripHorizontal, Building2 } from "lucide-react";
 import { Gender, EventFeedbackData } from "@/types/greeting-card";
 import { validateAndSanitizeName } from "@/lib/utils";
+
+export const WORK_REGIONS = [
+  "PT Perkebunan Nusantara I (HO)",
+  "PT Perkebunan Nusantara I (Re 1)",
+  "PT Perkebunan Nusantara I (Re 2)",
+  "PT Perkebunan Nusantara I (Re 3)",
+  "PT Perkebunan Nusantara I (Re 4)",
+  "PT Perkebunan Nusantara III (HO)",
+  "PT Perkebunan Nusantara IV (HO)",
+] as const;
 
 interface FeedbackFormProps {
   initialRating?: number | null;
   initialCritique?: string;
   initialName?: string;
   initialGender?: Gender;
+  initialWorkRegion?: string;
   onSubmit: (data: EventFeedbackData) => Promise<void> | void;
   isLoading?: boolean;
 }
@@ -19,6 +30,7 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
   initialCritique = "",
   initialName = "",
   initialGender = "laki-laki",
+  initialWorkRegion = "",
   onSubmit,
   isLoading = false,
 }) => {
@@ -26,13 +38,39 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
   const [critique, setCritique] = useState<string>(initialCritique);
   const [fullName, setFullName] = useState<string>(initialName);
   const [gender, setGender] = useState<Gender>(initialGender);
+  const [workRegion, setWorkRegion] = useState<string>(initialWorkRegion);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 1. Validasi Rating
+    // 1. Validasi Nama Lengkap
+    const { isValid, error, sanitized } = validateAndSanitizeName(fullName);
+    if (!isValid) {
+      setErrorMessage(error || "Silakan masukkan nama lengkap Anda untuk kartu apresiasi.");
+      const element = document.getElementById("question-recipient");
+      element?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    // 2. Validasi Jenis Kelamin
+    if (!gender) {
+      setErrorMessage("Silakan pilih jenis kelamin.");
+      const element = document.getElementById("question-recipient");
+      element?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    // 3. Validasi Wilayah Kerja
+    if (!workRegion) {
+      setErrorMessage("Silakan pilih wilayah kerja Anda.");
+      const element = document.getElementById("question-recipient");
+      element?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    // 4. Validasi Rating Kepuasan
     if (!rating) {
       setErrorMessage("Silakan pilih skala kepuasan Anda (angka 1 - 10).");
       const element = document.getElementById("question-rating");
@@ -40,26 +78,11 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
       return;
     }
 
-    // 2. Validasi Kritik & Saran
+    // 5. Validasi Kritik & Saran
     if (!critique.trim()) {
-      setErrorMessage("Silakan isi kritik dan saran Anda untuk acara.");
+      setErrorMessage("Silakan isi kritik dan saran Anda untuk acara donor darah hari ini.");
       const element = document.getElementById("question-critique");
       element?.scrollIntoView({ behavior: "smooth", block: "center" });
-      return;
-    }
-
-    // 3. Validasi Nama Lengkap
-    const { isValid, error, sanitized } = validateAndSanitizeName(fullName);
-    if (!isValid) {
-      setErrorMessage(error || "Silakan masukkan nama lengkap Anda untuk kartu apresiasi.");
-      const element = document.getElementById("question-name");
-      element?.scrollIntoView({ behavior: "smooth", block: "center" });
-      return;
-    }
-
-    // 4. Validasi Jenis Kelamin
-    if (!gender) {
-      setErrorMessage("Silakan pilih jenis kelamin.");
       return;
     }
 
@@ -72,7 +95,8 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
         critiqueAndSuggestions: critique.trim(),
         fullName: sanitized,
         gender,
-        eventName: "Nusantarun / PTPN Blood Heroes",
+        workRegion,
+        eventName: "PTPN Blood Heroes",
       });
     } finally {
       setIsSubmitting(false);
@@ -92,18 +116,18 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
         </div>
       )}
 
-      {/* CARD 1: HEADER FORM (Google Form Style dengan Top Accent) */}
+      {/* CARD 1: HEADER FORM (Google Form Style dengan Top Accent Maroon) */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200/90 overflow-hidden relative">
         {/* Accent Bar Atas Khas Form Berwarna Maroon PTPN */}
         <div className="h-3 w-full bg-gradient-to-r from-ptpn-maroon via-ptpn-blood to-ptpn-maroon" />
 
-        <div className="p-6 sm:p-8 space-y-4">
+        <div className="p-6 sm:p-8 space-y-3">
           <div>
             <h1 className="text-xl sm:text-2xl font-montserrat font-bold text-gray-900 tracking-tight">
               FEEDBACK PTPN BLOOD HEROES
             </h1>
             <p className="text-xs sm:text-sm text-gray-500 mt-1">
-              Silakan berikan penilaian dan masukan Anda terkait acara hari ini. Setelah mengirimkan feedback, Greeting Card apresiasi resmi Anda otomatis siap untuk diunduh.
+              Silakan lengkapi data penerima dan berikan penilaian serta masukan Anda terkait acara hari ini. Setelah mengirimkan formulir, Greeting Card apresiasi resmi Anda otomatis siap untuk diunduh.
             </p>
           </div>
         </div>
@@ -111,131 +135,9 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
 
       {/* FORM UTAMA */}
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-        {/* CARD 2: PERTANYAAN 1 - SKALA KEPUASAN (1 - 10) */}
+        {/* CARD 2: DATA PENERIMA GREETING CARD (POSISI DI ATAS) */}
         <div
-          id="question-rating"
-          className={`bg-white rounded-2xl shadow-sm border p-6 transition-all ${!rating && errorMessage?.includes("skala kepuasan")
-            ? "border-red-400 ring-2 ring-red-100"
-            : "border-gray-200/90 hover:border-gray-300"
-            }`}
-        >
-          <div className="space-y-4">
-            <label className="block text-sm sm:text-base font-medium text-gray-900 leading-snug">
-              Seberapa puas Anda terkait dengan acara donor darah hari ini?
-              <span className="text-red-500 font-bold ml-1">*</span>
-            </label>
-
-            {/* Skala Rating 1 sampai 10 (Responsive Radio Row) */}
-            <div className="pt-2">
-              <div className="overflow-x-auto pb-3 -mx-2 px-2 scrollbar-none">
-                <div className="min-w-[520px] sm:min-w-0 flex items-center justify-between gap-1 sm:gap-2">
-                  <span className="text-xs sm:text-sm text-gray-500 font-medium shrink-0 w-24 text-left">
-                    Sangat Tidak Puas
-                  </span>
-
-                  <div className="flex items-center justify-between flex-1 px-1">
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => {
-                      const isSelected = rating === num;
-                      return (
-                        <label
-                          key={num}
-                          className="flex flex-col items-center gap-2 cursor-pointer group py-1 px-1.5"
-                          onClick={() => {
-                            setRating(num);
-                            if (errorMessage) setErrorMessage(null);
-                          }}
-                        >
-                          <span
-                            className={`text-xs sm:text-sm font-semibold transition-colors ${isSelected ? "text-ptpn-maroon scale-110" : "text-gray-600 group-hover:text-gray-900"
-                              }`}
-                          >
-                            {num}
-                          </span>
-                          <div
-                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${isSelected
-                              ? "border-ptpn-maroon bg-ptpn-maroon/10"
-                              : "border-gray-300 group-hover:border-gray-400 bg-white"
-                              }`}
-                          >
-                            {isSelected && (
-                              <div className="w-2.5 h-2.5 rounded-full bg-ptpn-maroon" />
-                            )}
-                          </div>
-                          <input
-                            type="radio"
-                            name="satisfactionRating"
-                            value={num}
-                            checked={isSelected}
-                            onChange={() => {
-                              setRating(num);
-                              if (errorMessage) setErrorMessage(null);
-                            }}
-                            className="sr-only"
-                          />
-                        </label>
-                      );
-                    })}
-                  </div>
-
-                  <span className="text-xs sm:text-sm text-gray-500 font-medium shrink-0 w-24 text-right">
-                    Sangat Puas
-                  </span>
-                </div>
-              </div>
-
-              {/* Status Pilihan Terpilih */}
-              {rating !== null && (
-                <div className="mt-3 text-center text-xs font-semibold text-ptpn-maroon bg-rose-50/80 py-1.5 px-3 rounded-lg border border-rose-100/60 inline-flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>Nilai yang Anda pilih: <strong>{rating} dari 10</strong></span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* CARD 3: PERTANYAAN 2 - KRITIK & SARAN */}
-        <div
-          id="question-critique"
-          className={`bg-white rounded-2xl shadow-sm border p-6 transition-all relative ${!critique.trim() && errorMessage?.includes("kritik dan saran")
-            ? "border-red-400 ring-2 ring-red-100"
-            : "border-gray-200/90 hover:border-gray-300"
-            }`}
-        >
-          {/* Ikon Drag Handle Google Form */}
-          <div className="flex justify-center -mt-3 mb-2 text-gray-300">
-            <GripHorizontal className="w-5 h-5" />
-          </div>
-
-          <div className="space-y-3">
-            <label
-              htmlFor="critiqueInput"
-              className="block text-sm sm:text-base font-medium text-gray-900 leading-snug"
-            >
-              Berikan kritik dan saran untuk acara donor darah hari ini
-              <span className="text-red-500 font-bold ml-1">*</span>
-            </label>
-
-            <div>
-              <textarea
-                id="critiqueInput"
-                name="critique"
-                rows={3}
-                value={critique}
-                onChange={(e) => {
-                  setCritique(e.target.value);
-                  if (errorMessage) setErrorMessage(null);
-                }}
-                placeholder="Teks jawaban panjang"
-                className="w-full text-sm sm:text-base text-gray-800 placeholder-gray-400 bg-transparent border-0 border-b border-gray-300 focus:border-ptpn-maroon focus:ring-0 px-1 py-2.5 transition-colors resize-none leading-relaxed"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* CARD 4: DATA PESERTA GREETING CARD (NAMA LENGKAP & JENIS KELAMIN) */}
-        <div
-          id="question-name"
+          id="question-recipient"
           className="bg-white rounded-2xl shadow-sm border border-gray-200/90 p-6 space-y-5 hover:border-gray-300 transition-all"
         >
           <div className="border-b border-gray-100 pb-3">
@@ -310,6 +212,166 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
               </select>
             </div>
           </div>
+
+          {/* Dropdown Wilayah Kerja */}
+          <div className="space-y-2">
+            <label
+              htmlFor="workRegionSelect"
+              className="block text-sm font-medium text-gray-900"
+            >
+              Wilayah Kerja
+              <span className="text-red-500 font-bold ml-1">*</span>
+            </label>
+            <div className="relative rounded-xl shadow-sm">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                <Building2 className="h-5 w-5 text-ptpn-maroon/60" />
+              </div>
+              <select
+                id="workRegionSelect"
+                name="workRegion"
+                value={workRegion}
+                onChange={(e) => {
+                  setWorkRegion(e.target.value);
+                  if (errorMessage) setErrorMessage(null);
+                }}
+                className="block w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 text-gray-900 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-ptpn-maroon/20 focus:border-ptpn-maroon transition-all bg-gray-50/50 focus:bg-white cursor-pointer"
+                required
+              >
+                <option value="" disabled>-- Pilih Wilayah Kerja --</option>
+                {WORK_REGIONS.map((region) => (
+                  <option key={region} value={region}>
+                    {region}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* CARD 3: PERTANYAAN 1 - SKALA KEPUASAN (1 - 10) */}
+        <div
+          id="question-rating"
+          className={`bg-white rounded-2xl shadow-sm border p-6 transition-all ${
+            !rating && errorMessage?.includes("skala kepuasan")
+              ? "border-red-400 ring-2 ring-red-100"
+              : "border-gray-200/90 hover:border-gray-300"
+          }`}
+        >
+          <div className="space-y-4">
+            <label className="block text-sm sm:text-base font-medium text-gray-900 leading-snug">
+              Seberapa puas Anda terkait dengan acara donor darah hari ini?
+              <span className="text-red-500 font-bold ml-1">*</span>
+            </label>
+
+            {/* Skala Rating 1 sampai 10 (Responsive Radio Row) */}
+            <div className="pt-2">
+              <div className="overflow-x-auto pb-3 -mx-2 px-2 scrollbar-none">
+                <div className="min-w-[520px] sm:min-w-0 flex items-center justify-between gap-1 sm:gap-2">
+                  <span className="text-xs sm:text-sm text-gray-500 font-medium shrink-0 w-24 text-left">
+                    Sangat Tidak Puas
+                  </span>
+
+                  <div className="flex items-center justify-between flex-1 px-1">
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => {
+                      const isSelected = rating === num;
+                      return (
+                        <label
+                          key={num}
+                          className="flex flex-col items-center gap-2 cursor-pointer group py-1 px-1.5"
+                          onClick={() => {
+                            setRating(num);
+                            if (errorMessage) setErrorMessage(null);
+                          }}
+                        >
+                          <span
+                            className={`text-xs sm:text-sm font-semibold transition-colors ${
+                              isSelected ? "text-ptpn-maroon scale-110" : "text-gray-600 group-hover:text-gray-900"
+                            }`}
+                          >
+                            {num}
+                          </span>
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                              isSelected
+                                ? "border-ptpn-maroon bg-ptpn-maroon/10"
+                                : "border-gray-300 group-hover:border-gray-400 bg-white"
+                            }`}
+                          >
+                            {isSelected && (
+                              <div className="w-2.5 h-2.5 rounded-full bg-ptpn-maroon" />
+                            )}
+                          </div>
+                          <input
+                            type="radio"
+                            name="satisfactionRating"
+                            value={num}
+                            checked={isSelected}
+                            onChange={() => {
+                              setRating(num);
+                              if (errorMessage) setErrorMessage(null);
+                            }}
+                            className="sr-only"
+                          />
+                        </label>
+                      );
+                    })}
+                  </div>
+
+                  <span className="text-xs sm:text-sm text-gray-500 font-medium shrink-0 w-24 text-right">
+                    Sangat Puas
+                  </span>
+                </div>
+              </div>
+
+              {/* Status Pilihan Terpilih */}
+              {rating !== null && (
+                <div className="mt-3 text-center text-xs font-semibold text-ptpn-maroon bg-rose-50/80 py-1.5 px-3 rounded-lg border border-rose-100/60 inline-flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Nilai yang Anda pilih: <strong>{rating} dari 10</strong></span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* CARD 4: PERTANYAAN 2 - KRITIK & SARAN */}
+        <div
+          id="question-critique"
+          className={`bg-white rounded-2xl shadow-sm border p-6 transition-all relative ${
+            !critique.trim() && errorMessage?.includes("kritik dan saran")
+              ? "border-red-400 ring-2 ring-red-100"
+              : "border-gray-200/90 hover:border-gray-300"
+          }`}
+        >
+          {/* Ikon Drag Handle Google Form */}
+          <div className="flex justify-center -mt-3 mb-2 text-gray-300">
+            <GripHorizontal className="w-5 h-5" />
+          </div>
+
+          <div className="space-y-3">
+            <label
+              htmlFor="critiqueInput"
+              className="block text-sm sm:text-base font-medium text-gray-900 leading-snug"
+            >
+              Berikan kritik dan saran untuk acara donor darah hari ini
+              <span className="text-red-500 font-bold ml-1">*</span>
+            </label>
+
+            <div>
+              <textarea
+                id="critiqueInput"
+                name="critique"
+                rows={3}
+                value={critique}
+                onChange={(e) => {
+                  setCritique(e.target.value);
+                  if (errorMessage) setErrorMessage(null);
+                }}
+                placeholder="Teks jawaban panjang"
+                className="w-full text-sm sm:text-base text-gray-800 placeholder-gray-400 bg-transparent border-0 border-b border-gray-300 focus:border-ptpn-maroon focus:ring-0 px-1 py-2.5 transition-colors resize-none leading-relaxed"
+              />
+            </div>
+          </div>
         </div>
 
         {/* TOMBOL SUBMIT */}
@@ -338,4 +400,3 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
 };
 
 export default FeedbackForm;
-
