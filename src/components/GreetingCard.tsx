@@ -17,6 +17,9 @@ interface GreetingCardProps {
  * Mempertahankan 100% elemen grafis template resmi asli dan menambahkan teks
  * dinamis "Sdr. [Nama]" atau "Sdri. [Nama]" di posisi bawah tulisan "PAHLAWAN DONOR DARAH"
  * dan di atas kalimat "Setetes darah, sejuta harapan.".
+ *
+ * Menggunakan Container Queries (cqw) agar ukuran font tetap proporsional dan presisi
+ * di layar smartphone maupun desktop tanpa distorsi.
  */
 export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
   (
@@ -51,18 +54,31 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
     const displayName = formatCardName(fullName, gender);
     const nameLength = displayName.length;
 
-    // Kalkulasi ukuran teks adaptif agar tidak bertabrakan dengan elemen lain
-    const getFontSizeClasses = () => {
+    // Kalkulasi ukuran teks proporsional dengan lebar kartu (cqw - container query width)
+    // Menjamin teks selalu stabil dan tidak kekecilan di smartphone maupun kebesaran di desktop
+    const getFontSizeStyle = () => {
       if (nameLength > 55) {
-        return "text-[10px] sm:text-xs md:text-sm lg:text-[15px] leading-tight";
+        return {
+          fontSize: "clamp(9px, 1.45cqw, 22px)",
+          lineHeight: 1.2,
+        };
       }
       if (nameLength > 35) {
-        return "text-xs sm:text-sm md:text-base lg:text-lg leading-tight";
+        return {
+          fontSize: "clamp(10.5px, 1.75cqw, 26px)",
+          lineHeight: 1.25,
+        };
       }
       if (nameLength > 20) {
-        return "text-sm sm:text-base md:text-lg lg:text-xl leading-snug";
+        return {
+          fontSize: "clamp(11.5px, 1.95cqw, 29px)",
+          lineHeight: 1.3,
+        };
       }
-      return "text-base sm:text-lg md:text-xl lg:text-2xl leading-normal";
+      return {
+        fontSize: "clamp(12.5px, 2.15cqw, 32px)",
+        lineHeight: 1.35,
+      };
     };
 
     const handleImageError = () => {
@@ -83,11 +99,12 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
         className={`relative w-full overflow-hidden bg-white select-none ${className}`}
         style={{
           aspectRatio: "1504 / 1007",
+          containerType: "inline-size",
         }}
       >
         {/* Template Image Asli Sebagai Background */}
         <div className="relative w-full h-full">
-          {/* Menggunakan tag img standar agar kompatibel sempurna dengan html-to-image & canvas */}
+          {/* Menggunakan tag img standar agar kompatibel sempurna dengan canvas & peramban mobile */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             ref={imageElementRef}
@@ -111,12 +128,12 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
               left: "53.5%",
               top: "58.2%",
               width: "58%", // Batas lebar aman
-              maxHeight: "8%",
+              maxHeight: "8.5%",
             }}
           >
             <p
               data-card-name
-              className={`font-bold tracking-tight text-ptpn-maroon transition-all duration-300 font-montserrat ${getFontSizeClasses()}`}
+              className="font-bold tracking-tight text-ptpn-maroon transition-all duration-300 font-montserrat"
               style={{
                 fontFamily: 'var(--font-montserrat), "Poppins", "Montserrat", sans-serif',
                 color: "#6B0F1A",
@@ -127,6 +144,7 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
                 WebkitBoxOrient: "vertical",
                 overflow: "hidden",
                 wordBreak: "break-word",
+                ...getFontSizeStyle(),
               }}
             >
               {displayName}

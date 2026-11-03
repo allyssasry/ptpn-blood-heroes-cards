@@ -102,11 +102,10 @@ export const NameInputForm: React.FC<NameInputFormProps> = ({
               placeholder="Masukkan nama lengkap Anda"
               autoComplete="name"
               maxLength={80}
-              className={`block w-full pl-11 pr-4 py-3 sm:py-3.5 text-gray-900 text-sm sm:text-base rounded-xl border bg-gray-50/50 transition-all focus:bg-white focus:outline-none focus:ring-2 ${
-                errorMessage && !name.trim()
-                  ? "border-red-400 focus:ring-red-400/30"
-                  : "border-gray-200 focus:border-ptpn-maroon focus:ring-ptpn-blood/20"
-              }`}
+              className={`block w-full pl-11 pr-4 py-3 sm:py-3.5 text-gray-900 text-sm sm:text-base rounded-xl border bg-gray-50/50 transition-all focus:bg-white focus:outline-none focus:ring-2 ${errorMessage && !name.trim()
+                ? "border-red-400 focus:ring-red-400/30"
+                : "border-gray-200 focus:border-ptpn-maroon focus:ring-ptpn-blood/20"
+                }`}
             />
           </div>
         </div>
@@ -135,8 +134,8 @@ export const NameInputForm: React.FC<NameInputFormProps> = ({
               }}
               className="block w-full pl-11 pr-10 py-3 sm:py-3.5 text-gray-900 text-sm sm:text-base rounded-xl border border-gray-200 bg-gray-50/50 transition-all focus:bg-white focus:border-ptpn-maroon focus:outline-none focus:ring-2 focus:ring-ptpn-blood/20 appearance-none cursor-pointer"
             >
-              <option value="laki-laki">Laki-laki (Sdr.)</option>
-              <option value="perempuan">Perempuan (Sdri.)</option>
+              <option value="laki-laki">Laki-laki</option>
+              <option value="perempuan">Perempuan</option>
             </select>
 
             <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-gray-400">

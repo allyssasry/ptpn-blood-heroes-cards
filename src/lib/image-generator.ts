@@ -23,7 +23,9 @@ export function downloadDataUrl(dataUrl: string, fileName: string): void {
 
 /**
  * Mengonversi elemen HTML greeting card menjadi file gambar PNG atau JPG dan mengunduhnya.
- * Menggunakan dynamic import untuk html-to-image agar aman dari SSR.
+ * Mengutamakan Canvas 2D Engine dengan resolusi kanvas tetap 1504 × 1007 piksel
+ * agar hasil unduhan di smartphone (layar kecil) dan laptop/PC memiliki ukuran font
+ * dan ketajaman yang 100% identik dan tidak terpengaruh ukuran layar perangkat.
  */
 export async function exportCardAsImage(
   element: HTMLElement,
@@ -31,28 +33,30 @@ export async function exportCardAsImage(
   fileName: string,
   options?: ExportOptions
 ): Promise<string> {
-  const pixelRatio = options?.pixelRatio ?? 2;
-  const quality = options?.quality ?? 1.0;
-
-  const exportConfig = {
-    cacheBust: true,
-    pixelRatio,
-    quality,
-    backgroundColor: "#FFFFFF",
-    filter: (node: HTMLElement) => {
-      // Abaikan elemen UI seperti toolbar atau border pembantu jika ada
-      if (node.classList && node.classList.contains("no-export")) {
-        return false;
-      }
-      return true;
-    },
-  };
-
   try {
-    // Dynamic import library browser-only untuk menjamin stabilitas saat kompilasi
-    const { toPng, toJpeg } = await import("html-to-image");
-    let dataUrl: string;
+    return await exportCardViaCanvas(element, format, fileName);
+  } catch (canvasError) {
+    console.warn("Canvas export mengalami kendala, beralih ke html-to-image:", canvasError);
 
+    // Fallback cadangan menggunakan html-to-image
+    const { toPng, toJpeg } = await import("html-to-image");
+    const pixelRatio = options?.pixelRatio ?? 2;
+    const quality = options?.quality ?? 1.0;
+
+    const exportConfig = {
+      cacheBust: true,
+      pixelRatio,
+      quality,
+      backgroundColor: "#FFFFFF",
+      filter: (node: HTMLElement) => {
+        if (node.classList && node.classList.contains("no-export")) {
+          return false;
+        }
+        return true;
+      },
+    };
+
+    let dataUrl: string;
     if (format === "jpg") {
       dataUrl = await toJpeg(element, exportConfig);
     } else {
@@ -61,17 +65,13 @@ export async function exportCardAsImage(
 
     downloadDataUrl(dataUrl, fileName);
     return dataUrl;
-  } catch (error) {
-    console.warn("Gagal mengekspor via html-to-image, mencoba fallback canvas...", error);
-    // Jalankan fallback canvas jika html-to-image mengalami kendala
-    return exportCardViaCanvas(element, format, fileName);
   }
 }
 
 /**
- * Fallback generator menggunakan Native HTML5 Canvas 2D
+ * High-Definition Generator menggunakan Native HTML5 Canvas 2D
  * Memastikan hasil download selalu berukuran tepat 1504 × 1007 piksel
- * dan nama pengguna ter-render dengan sempurna di posisi tengah.
+ * dengan ukuran font tetap yang proporsional, baik dibuka di smartphone maupun PC.
  */
 export async function exportCardViaCanvas(
   element: HTMLElement,
@@ -85,9 +85,9 @@ export async function exportCardViaCanvas(
   const imgElement = element.querySelector("img") as HTMLImageElement | null;
   const templateSrc = imgElement?.src || "/images/fallback-template.png";
 
-  // Temukan teks nama yang dimasukkan
+  // Temukan teks nama yang dimasukkan (misal: "Sdr. Budi" atau "Sdri. Siti")
   const nameElement = element.querySelector("[data-card-name]") as HTMLElement | null;
-  const rawText = nameElement?.innerText || "Dear Pahlawan Donor Darah,";
+  const rawText = nameElement?.innerText || "Sdr. Pahlawan Donor Darah";
 
   return new Promise((resolve, reject) => {
     const canvas = document.createElement("canvas");
@@ -120,7 +120,7 @@ export async function exportCardViaCanvas(
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
-      // Hitung ukuran font adaptif berdasarkan panjang teks
+      // Ukuran font standar tetap yang seimbang untuk resolusi kartu 1504 x 1007
       const textLen = rawText.length;
       let fontSize = 28;
       if (textLen > 60) {
@@ -134,8 +134,8 @@ export async function exportCardViaCanvas(
       ctx.font = `700 ${fontSize}px "Montserrat", "Poppins", "Segoe UI", sans-serif`;
 
       // Efek bayangan halus agar teks selalu kontras dan terbaca jelas
-      ctx.shadowColor = "rgba(255, 255, 255, 0.9)";
-      ctx.shadowBlur = 6;
+      ctx.shadowColor = "rgba(255, 255, 255, 0.95)";
+      ctx.shadowBlur = 8;
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 0;
 
