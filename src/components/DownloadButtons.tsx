@@ -51,7 +51,7 @@ export const DownloadButtons: React.FC<DownloadButtonsProps> = ({
           {downloadingFormat === "png" ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin" />
-              <span>Memproses PNG (1504×1007)...</span>
+              <span>Memproses PNG...</span>
             </>
           ) : downloadSuccessFormat === "png" ? (
             <>
@@ -65,7 +65,7 @@ export const DownloadButtons: React.FC<DownloadButtonsProps> = ({
                 <div className="font-semibold text-sm sm:text-base leading-tight">
                   Download PNG
                 </div>
-                <div className="text-[11px] text-rose-200">Kualitas Tinggi (1504 × 1007)</div>
+                <div className="text-[11px] text-rose-200">Kualitas Maksimal Ultra HD</div>
               </div>
             </>
           )}

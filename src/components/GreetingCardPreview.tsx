@@ -119,10 +119,10 @@ export const GreetingCardPreview: React.FC<GreetingCardPreviewProps> = ({
 
         {/* Badge Dimensi Asli */}
         <div className="mt-2 flex items-center justify-between text-xs text-gray-400 px-2">
-          <span>Rasio Resmi Acara: 1504 × 1007 px</span>
+          <span>Format Resmi Acara PTPN</span>
           <span className="flex items-center gap-1">
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            High Resolution Ready (2x)
+            High Resolution Ready (Ultra HD)
           </span>
         </div>
       </div>

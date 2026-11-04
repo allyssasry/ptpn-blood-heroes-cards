@@ -59,25 +59,25 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
     const getFontSizeStyle = () => {
       if (nameLength > 55) {
         return {
-          fontSize: "clamp(9px, 1.45cqw, 22px)",
-          lineHeight: 1.2,
+          fontSize: "clamp(9px, 1.35cqw, 20px)",
+          lineHeight: 1.15,
         };
       }
       if (nameLength > 35) {
         return {
-          fontSize: "clamp(10.5px, 1.75cqw, 26px)",
-          lineHeight: 1.25,
+          fontSize: "clamp(10px, 1.6cqw, 24px)",
+          lineHeight: 1.2,
         };
       }
       if (nameLength > 20) {
         return {
-          fontSize: "clamp(11.5px, 1.95cqw, 29px)",
-          lineHeight: 1.3,
+          fontSize: "clamp(11px, 1.85cqw, 27px)",
+          lineHeight: 1.25,
         };
       }
       return {
-        fontSize: "clamp(12.5px, 2.15cqw, 32px)",
-        lineHeight: 1.35,
+        fontSize: "clamp(12px, 2.05cqw, 30px)",
+        lineHeight: 1.3,
       };
     };
 
@@ -98,7 +98,7 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
         id="greeting-card-element"
         className={`relative w-full overflow-hidden bg-white select-none ${className}`}
         style={{
-          aspectRatio: "1504 / 1007",
+          aspectRatio: "2000 / 1340",
           containerType: "inline-size",
         }}
       >
@@ -120,15 +120,16 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
           />
 
           {/* Area Teks Dinamis Personalisasi Nama */}
-          {/* Posisi: Tepat DI BAWAH tulisan "PAHLAWAN DONOR DARAH" (~52.5%) dan DI ATAS "Setetes darah, sejuta harapan." (~64.5%) */}
-          {/* Sumbu Horizontal: 53.5% agar presisi di tengah-tengah teks judul */}
+          {/* Posisi: Tepat DI TENGAH antara tulisan "PAHLAWAN DONOR DARAH" (~50.6%) dan tulisan "Atas kepedulian..." (~59.4%) */}
+          {/* Sumbu Vertikal: 55.0% agar jarak ke atas dan ke bawah seimbang sempurna tanpa saling bertabrakan */}
+          {/* Sumbu Horizontal: 52.0% agar sejajar simetris dengan teks judul dan kutipan */}
           <div
             className="absolute -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none"
             style={{
-              left: "53.5%",
-              top: "58.2%",
-              width: "58%", // Batas lebar aman
-              maxHeight: "8.5%",
+              left: "52.0%",
+              top: "55.0%",
+              width: "60%", // Batas lebar aman
+              maxHeight: "8.0%",
             }}
           >
             <p

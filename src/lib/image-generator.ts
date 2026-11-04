@@ -104,38 +104,45 @@ export async function exportCardViaCanvas(
     templateImg.crossOrigin = "anonymous";
 
     templateImg.onload = () => {
+      // Pastikan resolusi kanvas mengikuti resolusi asli template (2000 x 1340 px Ultra HD)
+      const canvasWidth = templateImg.naturalWidth || 2000;
+      const canvasHeight = templateImg.naturalHeight || 1340;
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+
       // Pastikan render kanvas menggunakan smoothing kualitas tinggi (tidak ngeblur)
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = "high";
 
-      // 1. Gambar background template penuh 1504 x 1007
-      ctx.drawImage(templateImg, 0, 0, TARGET_WIDTH, TARGET_HEIGHT);
+      // 1. Gambar background template penuh
+      ctx.drawImage(templateImg, 0, 0, canvasWidth, canvasHeight);
 
-      // 2. Render teks nama di bawah tulisan "PAHLAWAN DONOR DARAH" dan di atas "Setetes darah..."
-      // Posisi vertikal: 58.2% dari tinggi 1007px (~586px)
-      // Posisi horizontal: sumbu tengah visual teks acara (53.5% dari lebar kartu = 805px)
-      const centerX = Math.round(TARGET_WIDTH * 0.535);
-      const centerY = Math.round(TARGET_HEIGHT * 0.582);
+      // 2. Render teks nama tepat DI TENGAH antara tulisan "PAHLAWAN DONOR DARAH" (~50.6%) dan "Atas kepedulian..." (~59.4%)
+      // Posisi vertikal: 55.0% dari tinggi gambar (jarak simetris ~59px ke atas dan ~59px ke bawah)
+      // Posisi horizontal: sumbu tengah visual teks acara (52.0% dari lebar kartu)
+      const centerX = Math.round(canvasWidth * 0.520);
+      const centerY = Math.round(canvasHeight * 0.550);
 
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
-      // Ukuran font standar tetap yang seimbang untuk resolusi kartu 1504 x 1007
+      // Ukuran font standar tetap proporsional dengan lebar kanvas
       const textLen = rawText.length;
-      let fontSize = 28;
+      let fontScale = 0.020;
       if (textLen > 60) {
-        fontSize = 18;
+        fontScale = 0.013;
       } else if (textLen > 40) {
-        fontSize = 21;
+        fontScale = 0.0155;
       } else if (textLen > 25) {
-        fontSize = 24;
+        fontScale = 0.018;
       }
 
+      const fontSize = Math.round(canvasWidth * fontScale);
       ctx.font = `700 ${fontSize}px "Montserrat", "Poppins", "Segoe UI", sans-serif`;
 
       // Efek bayangan halus agar teks selalu kontras dan terbaca jelas
       ctx.shadowColor = "rgba(255, 255, 255, 0.95)";
-      ctx.shadowBlur = 8;
+      ctx.shadowBlur = Math.round(canvasWidth * 0.004);
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 0;
 
