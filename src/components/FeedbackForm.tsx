@@ -192,7 +192,7 @@ export const FeedbackForm: React.FC<FeedbackFormProps> = ({
                     if (errorMessage) setErrorMessage(null);
                   }
                 }}
-                placeholder="Contoh: Allyssa Nur Ayu Soraya"
+                placeholder="Masukkan Nama Lengkap"
                 className="block w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 text-gray-900 text-sm sm:text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ptpn-maroon/20 focus:border-ptpn-maroon transition-all bg-gray-50/50 focus:bg-white"
                 maxLength={80}
                 autoComplete="name"
