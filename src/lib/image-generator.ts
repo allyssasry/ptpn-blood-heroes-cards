@@ -117,11 +117,11 @@ export async function exportCardViaCanvas(
       // 1. Gambar background template penuh
       ctx.drawImage(templateImg, 0, 0, canvasWidth, canvasHeight);
 
-      // 2. Render teks nama tepat DI TENGAH antara tulisan "PAHLAWAN DONOR DARAH" (~50.6%) dan "Atas kepedulian..." (~59.4%)
-      // Posisi vertikal: 55.0% dari tinggi gambar (jarak simetris ~59px ke atas dan ~59px ke bawah)
-      // Posisi horizontal: sumbu tengah visual teks acara (52.0% dari lebar kartu)
-      const centerX = Math.round(canvasWidth * 0.520);
-      const centerY = Math.round(canvasHeight * 0.550);
+      // 2. Render teks nama tepat DI TENGAH antara tulisan "PAHLAWAN DONOR DARAH" (53.13%) dan "Atas kepedulian..." (62.99%)
+      // Posisi vertikal: 58.1% dari tinggi gambar (jarak simetris 66px ke atas dan 66px ke bawah)
+      // Posisi horizontal: sumbu tengah visual teks acara (52.25% dari lebar kartu)
+      const centerX = Math.round(canvasWidth * 0.5225);
+      const centerY = Math.round(canvasHeight * 0.5806);
 
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";

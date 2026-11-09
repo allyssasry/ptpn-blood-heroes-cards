@@ -120,16 +120,16 @@ export const GreetingCard = forwardRef<HTMLDivElement, GreetingCardProps>(
           />
 
           {/* Area Teks Dinamis Personalisasi Nama */}
-          {/* Posisi: Tepat DI TENGAH antara tulisan "PAHLAWAN DONOR DARAH" (~50.6%) dan tulisan "Atas kepedulian..." (~59.4%) */}
-          {/* Sumbu Vertikal: 55.0% agar jarak ke atas dan ke bawah seimbang sempurna tanpa saling bertabrakan */}
-          {/* Sumbu Horizontal: 52.0% agar sejajar simetris dengan teks judul dan kutipan */}
+          {/* Posisi: Tepat DI TENGAH antara tulisan "PAHLAWAN DONOR DARAH" (bawah: 53.13%) dan tulisan "Atas kepedulian..." (atas: 62.99%) */}
+          {/* Sumbu Vertikal: 58.1% (Y = 778px dari 1340px) agar jarak ke atas dan ke bawah seimbang presisi (66px atas & 66px bawah) */}
+          {/* Sumbu Horizontal: 52.25% (X = 1045px dari 2000px) agar sejajar simetris dengan teks judul dan kutipan */}
           <div
             className="absolute -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none"
             style={{
-              left: "52.0%",
-              top: "55.0%",
+              left: "52.25%",
+              top: "58.1%",
               width: "60%", // Batas lebar aman
-              maxHeight: "8.0%",
+              maxHeight: "9.0%",
             }}
           >
             <p
